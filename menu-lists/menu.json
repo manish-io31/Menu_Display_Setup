@@ -1,0 +1,645 @@
+{
+  "menu": [
+    {
+      "category": "Fire Wood Biriyani",
+      "items": [
+        {
+          "name": "Mutton Biriyani",
+          "price": 340,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 1
+        },
+        {
+          "name": "Chicken Biriyani",
+          "price": 240,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 2
+        },
+        {
+          "name": "Mutton Nalli Biriyani",
+          "price": 370,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 3
+        },
+        {
+          "name": "Nattukozhi Biriyani",
+          "price": 340,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 4
+        },
+        {
+          "name": "Egg Biriyani",
+          "price": 180,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 5
+        },
+        {
+          "name": "Veg Biriyani",
+          "price": 160,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 6
+        },
+        {
+          "name": "Paneer Biriyani",
+          "price": 190,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 7
+        },
+        {
+          "name": "Mushroom Biriyani",
+          "price": 180,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 8
+        },
+        {
+          "name": "Chicken 65 Biriyani",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 9
+        },
+        {
+          "name": "Hyderabadi Dum Biriyani",
+          "price": 290,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 10
+        },
+        {
+          "name": "Ambur Chicken Biriyani",
+          "price": 270,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 11
+        },
+        {
+          "name": "Seeraga Samba Biriyani",
+          "price": 300,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 12
+        },
+        {
+          "name": "Kaadai Biriyani",
+          "price": 320,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 13
+        },
+        {
+          "name": "Duck Biriyani",
+          "price": 350,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 14
+        },
+        {
+          "name": "Prawn Biriyani",
+          "price": 360,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 15
+        }
+      ]
+    },
+    {
+      "category": "Chettinadu Starters",
+      "items": [
+        {
+          "name": "Chicken 65",
+          "price": 210,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 16
+        },
+        {
+          "name": "Chicken Lollipop",
+          "price": 230,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 17
+        },
+        {
+          "name": "Pepper Chicken",
+          "price": 240,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 18
+        },
+        {
+          "name": "Chilli Chicken",
+          "price": 220,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 19
+        },
+        {
+          "name": "Chicken Sukka",
+          "price": 250,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 20
+        },
+        {
+          "name": "Chicken Varuval",
+          "price": 240,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 21
+        },
+        {
+          "name": "Nattukozhi Pepper Fry",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 22
+        },
+        {
+          "name": "Kaadai Pepper Fry",
+          "price": 170,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 23
+        },
+        {
+          "name": "Kaadai 65",
+          "price": 170,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 24
+        },
+        {
+          "name": "Chicken Milagu Roast",
+          "price": 255,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 25
+        }
+      ]
+    },
+    {
+      "category": "Mutton Starters",
+      "items": [
+        {
+          "name": "Mutton Chukka",
+          "price": 250,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 26
+        },
+        {
+          "name": "Mutton Pepper Fry",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 27
+        },
+        {
+          "name": "Mutton Nalli Roast",
+          "price": 280,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 28
+        },
+        {
+          "name": "Mutton Liver Fry",
+          "price": 250,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 29
+        },
+        {
+          "name": "Mutton Kudal Fry",
+          "price": 220,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 30
+        },
+        {
+          "name": "Mutton Brain Fry",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 31
+        }
+      ]
+    },
+    {
+      "category": "Seafood Starters",
+      "items": [
+        {
+          "name": "Fish Fry",
+          "price": 220,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 32
+        },
+        {
+          "name": "Fish Finger",
+          "price": 210,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 33
+        },
+        {
+          "name": "Prawn 65",
+          "price": 270,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 34
+        },
+        {
+          "name": "Prawn Pepper Fry",
+          "price": 270,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 35
+        },
+        {
+          "name": "Squid Fry",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 36
+        },
+        {
+          "name": "Crab Fry",
+          "price": 320,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 37
+        },
+        {
+          "name": "Dragon Prawn",
+          "price": 300,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 38
+        }
+      ]
+    },
+    {
+      "category": "Veg Starters",
+      "items": [
+        {
+          "name": "Paneer 65",
+          "price": 170,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 39
+        },
+        {
+          "name": "Chilli Paneer",
+          "price": 190,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 40
+        },
+        {
+          "name": "Gobi 65",
+          "price": 150,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 41
+        },
+        {
+          "name": "Mushroom Pepper Fry",
+          "price": 180,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 42
+        },
+        {
+          "name": "Baby Corn Manchurian",
+          "price": 180,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 43
+        },
+        {
+          "name": "Paneer Tikka",
+          "price": 220,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 44
+        }
+      ]
+    },
+    {
+      "category": "Rice & Noodles",
+      "items": [
+        {
+          "name": "Veg Fried Rice",
+          "price": 140,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 45
+        },
+        {
+          "name": "Chicken Fried Rice",
+          "price": 180,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 46
+        },
+        {
+          "name": "Egg Fried Rice",
+          "price": 160,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 47
+        },
+        {
+          "name": "Veg Noodles",
+          "price": 140,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 48
+        },
+        {
+          "name": "Chicken Noodles",
+          "price": 180,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 49
+        },
+        {
+          "name": "Mixed Fried Rice",
+          "price": 220,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 50
+        },
+        {
+          "name": "Schezwan Fried Rice",
+          "price": 190,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 51
+        }
+      ]
+    },
+    {
+      "category": "Egg Starter",
+      "items": [
+        {
+          "name": "Boiled Egg (1 Pcs)",
+          "price": 50,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 52
+        },
+        {
+          "name": "Omelette",
+          "price": 50,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 53
+        },
+        {
+          "name": "Masala Omelette",
+          "price": 60,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 54
+        },
+        {
+          "name": "Karandy Omelette",
+          "price": 70,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 55
+        },
+        {
+          "name": "Chicken Omelette",
+          "price": 240,
+          "foodType": "NON_VEG",
+          "isAvailable": true,
+          "id": 56
+        },
+        {
+          "name": "Mutton Omelette",
+          "price": 260,
+          "foodType": "NON_VEG",
+          "isAvailable": false,
+          "id": 57
+        }
+      ]
+    },
+    {
+      "category": "South Indian Breakfast",
+      "items": [
+        {
+          "name": "Idli (2 pcs)",
+          "price": 40,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 58
+        },
+        {
+          "name": "Vada (2 pcs)",
+          "price": 50,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 59
+        },
+        {
+          "name": "Pongal",
+          "price": 70,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 60
+        },
+        {
+          "name": "Poori Masala",
+          "price": 90,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 61
+        },
+        {
+          "name": "Masala Dosa",
+          "price": 140,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 62
+        }
+      ]
+    },
+    {
+      "category": "Desserts",
+      "items": [
+        {
+          "name": "Gulab Jamun",
+          "price": 60,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 63
+        },
+        {
+          "name": "Rasagulla",
+          "price": 70,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 64
+        },
+        {
+          "name": "Ice Cream Vanilla",
+          "price": 80,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 65
+        },
+        {
+          "name": "Ice Cream Chocolate",
+          "price": 90,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 66
+        },
+        {
+          "name": "Payasam",
+          "price": 70,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 67
+        }
+      ]
+    },
+    {
+      "category": "Beverages",
+      "items": [
+        {
+          "name": "Tea",
+          "price": 20,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 68
+        },
+        {
+          "name": "Coffee",
+          "price": 25,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 69
+        },
+        {
+          "name": "Rose Milk",
+          "price": 50,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 70
+        },
+        {
+          "name": "Badam Milk",
+          "price": 60,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 71
+        }
+      ]
+    },
+    {
+      "category": "Fresh Juices",
+      "items": [
+        {
+          "name": "Orange Juice",
+          "price": 60,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 72
+        },
+        {
+          "name": "Watermelon Juice",
+          "price": 50,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 73
+        },
+        {
+          "name": "Pineapple Juice",
+          "price": 65,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 74
+        },
+        {
+          "name": "Grape Juice",
+          "price": 70,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 75
+        },
+        {
+          "name": "Lime Juice",
+          "price": 40,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 76
+        }
+      ]
+    },
+    {
+      "category": "Mojito",
+      "items": [
+        {
+          "name": "Blueberry Chiller Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 77
+        },
+        {
+          "name": "Blue Curacao Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 78
+        },
+        {
+          "name": "Passion Fruit Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 79
+        },
+        {
+          "name": "Strawberry Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 80
+        },
+        {
+          "name": "Grenadine Mojito (Pomegranate)",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 81
+        },
+        {
+          "name": "Ginger Lime Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": false,
+          "id": 82
+        },
+        {
+          "name": "Mint Mojito",
+          "price": 120,
+          "foodType": "VEG",
+          "isAvailable": true,
+          "id": 83
+        }
+      ]
+    }
+  ]
+}
