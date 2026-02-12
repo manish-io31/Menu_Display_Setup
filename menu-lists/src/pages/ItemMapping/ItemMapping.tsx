@@ -5,12 +5,12 @@ import {
   toggleItemSelection,
   selectAllItems,
   removeAllItems,
-  updateTheme,
   updateItemDetails,
-  reorderCategories,
   reorderCategoryItems,
-} from "../../redux/Authactions";
-import { MenuState } from "../../redux/Authreducer";
+  reorderCategories,
+  updateTheme,
+} from "../../redux/actions";
+import { MenuState } from "../../redux/reducer";
 import { useNavigate } from "react-router-dom";
 import { calculateCapacityStatistics } from "../../utils/capacityCalculator";
 import MenuCard from "../../components/MenuCard/MenuCard";
@@ -565,6 +565,13 @@ function ItemMapping() {
             </div>
           )}
         </div>
+        {showPreviewModal && (
+          <Modal title="Preview" onClose={() => setShowPreviewModal(false)}>
+            <div className="preview-modal-content">
+              <MenuCard theme={theme} isFullPreview={true} />
+            </div>
+          </Modal>
+        )}
 
         {/* COLUMN 3: Selected Items List & Editing */}
         <div className="im-col-status">
@@ -828,6 +835,9 @@ function ItemMapping() {
       </div>
 
       <div className="footer-actions">
+        <button className="btn-skip" onClick={handleContinue}>
+          SKIP
+        </button>
         <div className="action-buttons right-aligned">
           <button
             className="btn-secondary-outline"
@@ -841,39 +851,36 @@ function ItemMapping() {
           >
             BACK
           </button>
-          <button
-            className="btn-continue"
-            disabled={totalSelectedCount === 0}
-            onClick={handleContinue}
-          >
+          <button className="btn-continue" onClick={handleContinue}>
             CONTINUE
           </button>
         </div>
       </div>
 
       {/* PREVIEW MODAL */}
-      <Modal
-        isOpen={showPreviewModal}
-        onClose={() => setShowPreviewModal(false)}
-        className="preview-modal"
-      >
-        <div className="im-modal-preview-container" ref={previewContainerRef}>
-          <div
-            className="im-scaled-preview"
-            style={{
-              transform: `scale(${previewScale})`,
-              width: theme.orientation === "portrait" ? "720px" : "1280px",
-              height: theme.orientation === "portrait" ? "1280px" : "720px",
-              transformOrigin: "top left",
-            }}
-          >
-            <MenuCard
-              theme={theme}
-              previewMode={false} // Only show selected items
-            />
+      {showPreviewModal && (
+        <Modal
+          title="Menu Card Preview"
+          onClose={() => setShowPreviewModal(false)}
+        >
+          <div className="im-modal-preview-container" ref={previewContainerRef}>
+            <div
+              className="im-scaled-preview"
+              style={{
+                transform: `scale(${previewScale})`,
+                width: theme.orientation === "portrait" ? "720px" : "1280px",
+                height: theme.orientation === "portrait" ? "1280px" : "720px",
+                transformOrigin: "top left",
+              }}
+            >
+              <MenuCard
+                theme={theme}
+                previewMode={false} // Only show selected items
+              />
+            </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      )}
     </div>
   );
 }

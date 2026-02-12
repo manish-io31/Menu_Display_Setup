@@ -6,15 +6,30 @@ import {
   UPDATE_THEME,
   SELECT_ALL_ITEMS,
   REMOVE_ALL_ITEMS,
-} from "./Authconstant";
-import { MenuCategory, ThemeConfig } from "../types";
-import { AuthActionTypes } from "./Authactions";
+  SAVE_THEME_REQUEST,
+  SAVE_THEME_SUCCESS,
+  SAVE_THEME_FAILURE,
+  CREATE_DISPLAY_REQUEST,
+  CREATE_DISPLAY_SUCCESS,
+  CREATE_DISPLAY_FAILURE,
+  DELETE_DISPLAY_REQUEST,
+  DELETE_DISPLAY_SUCCESS,
+  DELETE_DISPLAY_FAILURE,
+  FETCH_DISPLAYS_REQUEST,
+  FETCH_DISPLAYS_SUCCESS,
+  FETCH_DISPLAYS_FAILURE,
+} from "./constants";
+import { MenuCategory, ThemeConfig, Display, MenuItem } from "../types";
+import { AuthActionTypes } from "./actions";
 
 export interface MenuState {
   loading: boolean;
   menu: MenuCategory[];
   error: string | null;
   theme: ThemeConfig;
+  saving: boolean;
+  displays: Display[];
+  fetchingDisplays: boolean;
 }
 
 const initialState: MenuState = {
@@ -44,7 +59,11 @@ const initialState: MenuState = {
     showUnavailable: true,
     bgOpacity: 100,
     approxItemsVisible: 45,
+    menuImages: ["", "", ""],
   },
+  saving: false,
+  displays: [],
+  fetchingDisplays: false,
 };
 
 const menuReducer = (
@@ -55,13 +74,22 @@ const menuReducer = (
     case FETCH_MENU_REQUEST:
       return { ...state, loading: true };
 
+    case SAVE_THEME_REQUEST:
+      return { ...state, saving: true };
+
+    case SAVE_THEME_SUCCESS:
+      return { ...state, saving: false };
+
+    case SAVE_THEME_FAILURE:
+      return { ...state, saving: false };
+
     case FETCH_MENU_SUCCESS:
       return {
         ...state,
         loading: false,
-        menu: action.payload.map((cat) => ({
+        menu: action.payload.map((cat: MenuCategory) => ({
           ...cat,
-          items: cat.items.map((item) => ({
+          items: cat.items.map((item: MenuItem) => ({
             ...item,
             // Initialize isSelected to false by default (users must manually select items)
             isSelected: item.isSelected !== undefined ? item.isSelected : false,
@@ -167,6 +195,41 @@ const menuReducer = (
           items: cat.items.map((item) => ({ ...item, isSelected: false })),
         })),
       };
+
+    case FETCH_DISPLAYS_REQUEST:
+      return { ...state, fetchingDisplays: true };
+
+    case FETCH_DISPLAYS_SUCCESS:
+      return { ...state, fetchingDisplays: false, displays: action.payload };
+
+    case FETCH_DISPLAYS_FAILURE:
+      return { ...state, fetchingDisplays: false, error: action.payload };
+
+    case CREATE_DISPLAY_REQUEST:
+      return { ...state, saving: true };
+
+    case CREATE_DISPLAY_SUCCESS:
+      return {
+        ...state,
+        saving: false,
+        displays: [action.payload, ...state.displays],
+      };
+
+    case CREATE_DISPLAY_FAILURE:
+      return { ...state, saving: false, error: action.payload };
+
+    case DELETE_DISPLAY_REQUEST:
+      return { ...state, saving: true };
+
+    case DELETE_DISPLAY_SUCCESS:
+      return {
+        ...state,
+        saving: false,
+        displays: state.displays.filter((d) => d.id !== action.payload),
+      };
+
+    case DELETE_DISPLAY_FAILURE:
+      return { ...state, saving: false, error: action.payload };
 
     default:
       return state;

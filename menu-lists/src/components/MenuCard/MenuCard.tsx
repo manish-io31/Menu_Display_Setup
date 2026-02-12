@@ -1,7 +1,7 @@
-import react, { useMemo, useEffect, CSSProperties } from "react";
+import { useMemo, useEffect, CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ThemeConfig, MenuItem } from "../../types";
-import { fetchMenuRequest } from "../../redux/Authactions";
+import { fetchMenuRequest } from "../../redux/actions";
 import "./MenuCard.css";
 import { RootState, AppDispatch } from "../../redux/store";
 
@@ -11,11 +11,13 @@ interface MenuCardProps {
   setIsFullPreview?: (isFull: boolean) => void;
   onItemsVisibleChange?: (count: number) => void;
   previewMode?: boolean; // New prop to force render items
+  hideHeader?: boolean; // New prop to hide logo and company name
 }
 
 type MenuNode =
   | { type: "header"; text: string; isPrimary: boolean }
-  | { type: "item"; data: MenuItem };
+  | { type: "item"; data: MenuItem }
+  | { type: "image"; src: string; height: number };
 
 function MenuCard({
   theme = {},
@@ -23,6 +25,7 @@ function MenuCard({
   setIsFullPreview,
   onItemsVisibleChange,
   previewMode = false,
+  hideHeader = false,
 }: MenuCardProps) {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -100,13 +103,13 @@ function MenuCard({
 
   const columns = useMemo(() => {
     const isPortrait = orientation === "portrait";
-    const numCols = isPortrait ? 2 : 3;
+    const numCols = hideHeader ? 3 : isPortrait ? 2 : 3;
     const scale = theme.fontSizeScale || 3;
 
     const totalW = isPortrait ? 720 : 1280;
     const totalH = isPortrait ? 1280 : 720;
 
-    const headerH_px = totalH * 0.1;
+    const headerH_px = showLogo && !hideHeader ? totalH * 0.1 : 0;
     const footerH_px = 80;
     const paddingY = 40;
     const availableGridHeight =
@@ -130,6 +133,7 @@ function MenuCard({
 
     const getNodeHeight = (node: MenuNode) => {
       if (node.type === "header") return headerNodeH;
+      if (node.type === "image") return node.height;
       const itemName = node.data.displayName || node.data.name || "";
       const lines = Math.ceil(itemName.length / Math.max(10, avgCharsPerLine));
       return lines * lineH + nodePadding;
@@ -140,8 +144,13 @@ function MenuCard({
     let currentCol = 0;
     let currentColHeight = 0;
 
+    // Filter items based on capacity
+    const capacity = theme.approxItemsVisible || 45;
+    let itemsAdded = 0;
+
     for (const node of flattenedItems) {
-      if (node.type === "item" && !node.data.name) continue; // Safety
+      if (node.type === "item" && !node.data.name) continue;
+      if (node.type === "item" && itemsAdded >= capacity) break;
 
       const h = getNodeHeight(node);
 
@@ -159,6 +168,7 @@ function MenuCard({
 
       cols[currentCol].push(node);
       currentColHeight += h;
+      if (node.type === "item") itemsAdded++;
     }
 
     // Cleanup trailing headers in columns
@@ -168,8 +178,63 @@ function MenuCard({
       }
     });
 
+    // --- Blank Space Image Filling ---
+    const uploadedImages = (theme.menuImages || []).filter((img) => !!img);
+    if (uploadedImages.length > 0) {
+      let imageIdx = 0;
+      let iterations = 0;
+      const MAX_ITERATIONS = 20; // Safety
+
+      // We'll keep filling columns as long as we have
+      // space > 150px and haven't looped too many times
+      while (iterations < MAX_ITERATIONS) {
+        let bestCol = -1;
+        let maxSpace = 0;
+
+        for (let c = 0; c < numCols; c++) {
+          const colHeight = cols[c].reduce(
+            (sum, n) => sum + getNodeHeight(n),
+            0,
+          );
+          const space = availableGridHeight - colHeight;
+          if (space > maxSpace) {
+            maxSpace = space;
+            bestCol = c;
+          }
+        }
+
+        if (
+          bestCol === -1 ||
+          maxSpace < 150 ||
+          imageIdx >= uploadedImages.length
+        ) {
+          break;
+        }
+
+        // Divide remaining space if there are many images?
+        // For simplicity, let's take a chunk or the whole space
+        const imgH = maxSpace;
+
+        cols[bestCol].push({
+          type: "image",
+          src: uploadedImages[imageIdx],
+          height: imgH,
+        });
+
+        imageIdx++;
+        iterations++;
+      }
+    }
+
     return cols;
-  }, [flattenedItems, orientation, theme.fontSizeScale]);
+  }, [
+    flattenedItems,
+    orientation,
+    theme.fontSizeScale,
+    theme.approxItemsVisible,
+    hideHeader,
+    showLogo,
+  ]);
 
   useEffect(() => {
     if (onItemsVisibleChange) {
@@ -208,7 +273,7 @@ function MenuCard({
           ✕ CLOSE PREVIEW
         </button>
       )}
-      {showLogo && (
+      {showLogo && !hideHeader && (
         <div className="preview-header">
           <img
             src={
@@ -247,7 +312,7 @@ function MenuCard({
                     <span>{node.text}</span>
                   </div>
                 );
-              } else {
+              } else if (node.type === "item") {
                 const item = node.data;
                 return (
                   <div
@@ -269,6 +334,16 @@ function MenuCard({
                         ? `₹${item.displayPrice || item.price}`
                         : "Sold Out"}
                     </span>
+                  </div>
+                );
+              } else if (node.type === "image") {
+                return (
+                  <div
+                    className="preview-image-node"
+                    key={`img-${colIdx}-${nodeIdx}`}
+                    style={{ height: `${node.height}px` }}
+                  >
+                    <img src={node.src} alt="Uploaded" />
                   </div>
                 );
               }

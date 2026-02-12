@@ -14,6 +14,7 @@ function StepNav({ currentStep, setCurrentStep }: StepNavProps) {
     { label: "Theme", path: "/preview" },
     { label: "Item Mapping", path: "/item-mapping" },
     { label: "Upload Images", path: "/upload-images" },
+    { label: "Final Preview", path: "/final-preview" },
   ];
 
   const handleStepClick = (stepNumber: number, path: string) => {

@@ -4,6 +4,8 @@ import MenuCard from "./components/MenuCard/MenuCard";
 import Preview from "./pages/Preview/Preview";
 import ItemMapping from "./pages/ItemMapping/ItemMapping";
 import UploadImages from "./pages/UploadImages/UploadImages";
+import FinalPreview from "./pages/FinalPreview/FinalPreview";
+import Displays from "./pages/Displays/Displays";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Route path="/preview" element={<Preview />} />
       <Route path="/item-mapping" element={<ItemMapping />} />
       <Route path="/upload-images" element={<UploadImages />} />
+      <Route path="/final-preview" element={<FinalPreview />} />
+      <Route path="/displays" element={<Displays />} />
     </Routes>
   );
 }

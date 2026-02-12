@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTheme } from "../../redux/Authactions";
+import { updateTheme } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import MenuCard from "../../components/MenuCard/MenuCard";
 import PageHeader from "../../components/PageHeader/PageHeader";

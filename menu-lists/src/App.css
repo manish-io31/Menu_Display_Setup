@@ -776,7 +776,7 @@ body {
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background-color: #ccc;
+  background-color: #c50707;
   border-radius: 34px;
   transition: 0.4s;
 }
@@ -794,7 +794,7 @@ body {
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: #c50707;
 }
 
 input:focus + .slider {

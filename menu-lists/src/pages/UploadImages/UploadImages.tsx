@@ -1,240 +1,105 @@
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateTheme } from "../../redux/Authactions";
-import { MenuState } from "../../redux/Authreducer";
-import MenuCard from "../../components/MenuCard/MenuCard";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader/PageHeader";
-import "../../App.css"; // Keep global styles for now
+import ImageUploadCard from "../../components/ImageUploadCard/ImageUploadCard";
+import { updateTheme, saveThemeRequest } from "../../redux/actions";
+import { RootState, AppDispatch } from "../../redux/store";
 import "./UploadImages.css";
 
-const UploadImages = () => {
-  const dispatch = useDispatch() as any;
-  const { theme } = useSelector((state: MenuState) => state);
-  const [activeTab, setActiveTab] = useState<"logo" | "background">("logo");
+const UploadImages: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const theme = useSelector((state: RootState) => state.theme);
+  const saving = useSelector((state: RootState) => state.saving);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const bgInputRef = useRef<HTMLInputElement>(null);
-
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        dispatch(updateTheme({ logo: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
+  React.useEffect(() => {
+    if (isSubmitting && !saving) {
+      navigate("/final-preview");
     }
+  }, [saving, isSubmitting, navigate]);
+
+  const handleImageChange = (index: number, value: string) => {
+    const newImages = [...(theme.menuImages || ["", "", ""])];
+    newImages[index] = value;
+    dispatch(updateTheme({ menuImages: newImages }));
   };
 
-  const handleBgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        dispatch(
-          updateTheme({
-            backgroundType: "image",
-            backgroundImage: reader.result as string,
-          }),
-        );
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleRemoveImage = (index: number) => {
+    const newImages = [...(theme.menuImages || ["", "", ""])];
+    newImages[index] = "";
+    dispatch(updateTheme({ menuImages: newImages }));
   };
 
-  const handleRemoveLogo = () => {
-    dispatch(updateTheme({ logo: "" }));
-    if (logoInputRef.current) logoInputRef.current.value = "";
-  };
-
-  const handleRemoveBg = () => {
-    dispatch(updateTheme({ backgroundImage: "", backgroundType: "color" }));
-    if (bgInputRef.current) bgInputRef.current.value = "";
-  };
-
-  // Mock function for "Final Review" or next step
-  const handleNext = () => {
-    // navigate("/final-review"); // Future route
-    alert("Proceeding to Final Review (Not implemented yet)");
+  const handleContinue = () => {
+    if (saving) return;
+    setIsSubmitting(true);
+    dispatch(saveThemeRequest(theme));
   };
 
   return (
-    <div className="preview-layout-container">
+    <div className="upload-images-container">
       <PageHeader title="Display signage" currentStep={4} />
 
-      <div className="item-mapping-grid upload-layout-grid">
-        {/* LEFT PANEL: Controls */}
-        <div className="sidebar-controls">
-          <h2>Customize Branding</h2>
-
-          <div className="control-group">
-            <label>Active Section</label>
-            <div className="toggle-group">
-              <button
-                className={`toggle-btn ${activeTab === "logo" ? "active" : ""}`}
-                onClick={() => setActiveTab("logo")}
-              >
-                Logo
-              </button>
-              <button
-                className={`toggle-btn ${activeTab === "background" ? "active" : ""}`}
-                onClick={() => setActiveTab("background")}
-              >
-                Background
-              </button>
-            </div>
+      <div className="upload-images-content">
+        <div className="images-status-bar">
+          <div className="status-left">
+            <span className="status-item">
+              Selected Orientation:{" "}
+              <b>
+                {theme.orientation === "landscape"
+                  ? "Landscape (3 Column Display)"
+                  : "Portrait (Stacked Display)"}
+              </b>
+            </span>
+            <span className="status-item">
+              Font Size :{" "}
+              <b>Large (Approx. {theme.approxItemsVisible} Items)</b>
+            </span>
           </div>
-
-          {activeTab === "logo" && (
-            <div className="control-section fade-in">
-              <h3>Logo Settings</h3>
-              <div
-                className="upload-box"
-                onClick={() => logoInputRef.current?.click()}
-              >
-                {theme.logo ? (
-                  <img
-                    src={theme.logo}
-                    alt="Logo Preview"
-                    className="upload-preview"
-                  />
-                ) : (
-                  <div className="upload-placeholder">
-                    <span>Click to Upload Logo</span>
-                  </div>
-                )}
-                <input
-                  type="file"
-                  ref={logoInputRef}
-                  onChange={handleLogoUpload}
-                  accept="image/*"
-                  hidden
-                />
-              </div>
-
-              {theme.logo && (
-                <>
-                  <div className="control-group">
-                    <button
-                      className="btn-danger-outline"
-                      onClick={handleRemoveLogo}
-                    >
-                      Remove Logo
-                    </button>
-                  </div>
-
-                  <div className="control-group">
-                    <label>Logo Size ({theme.logoWidth || 150}px)</label>
-                    <input
-                      type="range"
-                      min="50"
-                      max="300"
-                      value={theme.logoWidth || 150}
-                      onChange={(e) =>
-                        dispatch(
-                          updateTheme({ logoWidth: Number(e.target.value) }),
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div className="control-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={theme.showLogo}
-                        onChange={(e) =>
-                          dispatch(updateTheme({ showLogo: e.target.checked }))
-                        }
-                      />
-                      Show Logo on Card
-                    </label>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {activeTab === "background" && (
-            <div className="control-section fade-in">
-              <h3>Background Settings</h3>
-              <div
-                className="upload-box"
-                onClick={() => bgInputRef.current?.click()}
-              >
-                {theme.backgroundImage ? (
-                  <div
-                    className="upload-preview-bg"
-                    style={{ backgroundImage: `url(${theme.backgroundImage})` }}
-                  />
-                ) : (
-                  <div className="upload-placeholder">
-                    <span>Click to Upload Background</span>
-                  </div>
-                )}
-                <input
-                  type="file"
-                  ref={bgInputRef}
-                  onChange={handleBgUpload}
-                  accept="image/*"
-                  hidden
-                />
-              </div>
-
-              {theme.backgroundImage && (
-                <>
-                  <div className="control-group">
-                    <button
-                      className="btn-danger-outline"
-                      onClick={handleRemoveBg}
-                    >
-                      Remove Background
-                    </button>
-                  </div>
-
-                  <div className="control-group">
-                    <label>Opacity ({theme.bgOpacity || 100}%)</label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={theme.bgOpacity || 100}
-                      onChange={(e) =>
-                        dispatch(
-                          updateTheme({ bgOpacity: Number(e.target.value) }),
-                        )
-                      }
-                    />
-                  </div>
-                </>
-              )}
-              <div className="control-group">
-                <label>Background Color (Fallback)</label>
-                <input
-                  type="color"
-                  value={theme.backgroundColor}
-                  onChange={(e) =>
-                    dispatch(updateTheme({ backgroundColor: e.target.value }))
-                  }
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="sidebar-footer">
-            <button className="btn-continue" onClick={handleNext}>
-              FINALIZE DESIGN -&gt;
-            </button>
+          <div className="images-hint-box">
+            Images will be shown based on available space only
           </div>
         </div>
 
-        {/* RIGHT PANEL: Preview */}
-        <div className="preview-container">
-          <div className="preview-wrapper">
-            <MenuCard theme={theme} previewMode={true} />
-          </div>
+        <div className="images-section-header">
+          <h3>Images</h3>
+          <span className="info-icon-small">i</span>
+        </div>
+
+        <div className="images-upload-grid">
+          {(theme.menuImages || ["", "", ""]).map((img, idx) => (
+            <ImageUploadCard
+              key={idx}
+              index={idx}
+              value={img}
+              onChange={(val) => handleImageChange(idx, val)}
+              onRemove={() => handleRemoveImage(idx)}
+            />
+          ))}
         </div>
       </div>
+
+      <footer className="upload-footer">
+        <button className="btn-skip" onClick={handleContinue} disabled={saving}>
+          {saving ? "SAVING..." : "SKIP"}
+        </button>
+        <button
+          className="btn-back-outline"
+          onClick={() => navigate(-1)}
+          disabled={saving}
+        >
+          BACK
+        </button>
+        <button
+          className="btn-continue-filled"
+          onClick={handleContinue}
+          disabled={saving}
+        >
+          {saving ? "SAVING..." : "CONTINUE"}
+        </button>
+      </footer>
     </div>
   );
 };

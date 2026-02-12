@@ -1,7 +1,7 @@
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
-import menuReducer from "./Authreducer";
-import rootSaga from "./saga";
+import menuReducer from "./reducer";
+import rootSaga from "./sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -1,0 +1,124 @@
+.final-preview-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.final-preview-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  background-color: #1a1a1a;
+}
+
+.final-preview-content .preview-board {
+  width: 1280px !important;
+  height: 720px !important;
+  transform: scale(var(--preview-scale, 0.8));
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.final-footer {
+  height: 80px;
+  background-color: #242424;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 40px;
+  gap: 20px;
+  z-index: 10;
+}
+
+.btn-cancel-outline {
+  padding: 12px 32px;
+  background: transparent;
+  border: 2px solid #ea0089;
+  color: #ea0089;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel-outline:hover {
+  background: rgba(234, 0, 137, 0.1);
+}
+
+.btn-create-filled {
+  padding: 12px 32px;
+  background: #ea0089;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-create-filled:hover {
+  background: #c20072;
+}
+
+.btn-create-filled:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Modal styles within FinalPreview */
+.create-display-form {
+  padding: 10px 0;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: white;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: #ea0089;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-modal-secondary {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid #666;
+  color: #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-modal-primary {
+  padding: 10px 24px;
+  background: #ea0089;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-modal-primary:hover {
+  background: #c30072;
+}

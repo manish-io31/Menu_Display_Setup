@@ -43,4 +43,16 @@ export interface ThemeConfig {
   showUnavailable?: boolean;
   bgOpacity?: number;
   approxItemsVisible: number;
+  menuImages: string[];
+}
+
+export interface Display {
+  id: number | string;
+  name: string;
+  type: string;
+  orientation: "landscape" | "portrait";
+  isActive: boolean;
+  selectedItems: MenuItem[];
+  theme: ThemeConfig;
+  uploadedImages: string[];
 }
