@@ -1,0 +1,70 @@
+.page-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 250px;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-back-btn {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #555;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.header-back-btn:hover {
+  border-color: #999;
+  color: #333;
+  background: #f9f9f9;
+}
+
+.back-icon {
+  font-size: 1.4rem;
+  line-height: 0.6;
+  margin-top: -3px;
+}
+
+.header-steps {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Override StepNav styles to fit nicely in header if needed */
+.header-steps .step-nav-wrapper {
+  background: transparent;
+  padding: 0;
+  border: none;
+}

@@ -1,5 +1,5 @@
-// src/components/StepNav.jsx
 import { useNavigate } from "react-router-dom";
+import "./StepNav.css";
 
 interface StepNavProps {
   currentStep: number;
@@ -40,8 +40,9 @@ function StepNav({ currentStep, setCurrentStep }: StepNavProps) {
               </div>
 
               <span
-                className={`step-label ${stepNumber === currentStep ? "active-label" : ""
-                  }`}
+                className={`step-label ${
+                  stepNumber === currentStep ? "active-label" : ""
+                }`}
                 onClick={() => handleStepClick(stepNumber, step.path)}
               >
                 {step.label}

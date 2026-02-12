@@ -1,12 +1,13 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTheme } from "../redux/Authactions";
-import { MenuState } from "../redux/Authreducer";
+import { updateTheme } from "../../redux/Authactions";
 import { useNavigate } from "react-router-dom";
-import StepNav from "../components/StepNav";
-import MenuCard from "./menucard";
-import { ThemeConfig } from "../types";
-// import "../App.css"; // Already imported globally or we can keep it
+import MenuCard from "../../components/MenuCard/MenuCard";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import { ThemeConfig } from "../../types";
+import { calculateCapacityStatistics } from "../../utils/capacityCalculator";
+import { RootState, AppDispatch } from "../../redux/store";
+import "./Preview.css";
 
 export default function Preview() {
   const navigate = useNavigate();
@@ -28,12 +29,27 @@ export default function Preview() {
     }));
   };
 
-  const dispatch = useDispatch();
-  const { menu = [], theme } = useSelector((state: MenuState) => state);
+  const dispatch = useDispatch<AppDispatch>();
+  const { menu = [], theme } = useSelector((state: RootState) => state);
+
+  // Sync capacity when theme settings change (like in ItemMapping)
+  useEffect(() => {
+    const stats = calculateCapacityStatistics(theme, menu);
+    if (stats.totalCapacity !== theme.approxItemsVisible) {
+      dispatch(updateTheme({ approxItemsVisible: stats.totalCapacity }) as any);
+    }
+  }, [
+    theme.fontSizeScale,
+    theme.orientation,
+    theme.showLogo,
+    theme.showFooter,
+    theme.showUnavailable,
+    menu,
+  ]);
 
   // Helper to update theme via Redux
   const handleThemeUpdate = (updates: Partial<ThemeConfig>) => {
-    dispatch(updateTheme(updates));
+    dispatch(updateTheme(updates) as any);
   };
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +66,7 @@ export default function Preview() {
   return (
     <div className="preview-layout-container">
       {/* Top Navigation / Header */}
-      <div className="page-header">
-        <button className="header-back-btn">
-          <span className="sidebar-back-btn-content">‹</span> Back
-        </button>
-        <h2 className="header-title">Display signage</h2>
-      </div>
-
-      <StepNav currentStep={2} />
+      <PageHeader title="Display signage" currentStep={2} />
 
       <div className={`preview-page ${isFullPreview ? "full-preview" : ""}`}>
         {/* LEFT SIDEBAR */}

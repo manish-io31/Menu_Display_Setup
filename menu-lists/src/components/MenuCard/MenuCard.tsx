@@ -1,11 +1,9 @@
-// src/pages/MenuCard.tsx
-import { useEffect, useMemo, CSSProperties } from "react";
+import react, { useMemo, useEffect, CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { fetchMenuRequest } from "../redux/Authactions";
-import { MenuState } from "../redux/Authreducer";
-import { ThemeConfig, MenuItem } from "../types";
-import "../App.css";
+import { ThemeConfig, MenuItem } from "../../types";
+import { fetchMenuRequest } from "../../redux/Authactions";
+import "./MenuCard.css";
+import { RootState, AppDispatch } from "../../redux/store";
 
 interface MenuCardProps {
   theme?: Partial<ThemeConfig>;
@@ -26,9 +24,9 @@ function MenuCard({
   onItemsVisibleChange,
   previewMode = false,
 }: MenuCardProps) {
-  const dispatch = useDispatch<Dispatch<any>>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { loading, menu = [] } = useSelector((state: MenuState) => state);
+  const { loading, menu = [] } = useSelector((state: RootState) => state);
 
   useEffect(() => {
     if (!menu || menu.length === 0) {
@@ -98,7 +96,8 @@ function MenuCard({
       }
     });
     return flatList;
-  }, [menu, showUnavailable]);
+  }, [menu, showUnavailable, previewMode]);
+
   const columns = useMemo(() => {
     const isPortrait = orientation === "portrait";
     const numCols = isPortrait ? 2 : 3;
@@ -131,9 +130,8 @@ function MenuCard({
 
     const getNodeHeight = (node: MenuNode) => {
       if (node.type === "header") return headerNodeH;
-      const lines = Math.ceil(
-        node.data.name.length / Math.max(10, avgCharsPerLine),
-      );
+      const itemName = node.data.displayName || node.data.name || "";
+      const lines = Math.ceil(itemName.length / Math.max(10, avgCharsPerLine));
       return lines * lineH + nodePadding;
     };
 
@@ -143,28 +141,36 @@ function MenuCard({
     let currentColHeight = 0;
 
     for (const node of flattenedItems) {
+      if (node.type === "item" && !node.data.name) continue; // Safety
+
       const h = getNodeHeight(node);
 
+      // If adds to more than height, move to next col
+      // But simple greedy might leave holes or split weirdly.
+      // User logic is simple greedy.
       if (currentColHeight + h > availableGridHeight) {
         currentCol++;
         currentColHeight = 0;
 
         if (currentCol >= numCols) {
-          break;
+          break; // Stop rendering if out of space
         }
       }
 
       cols[currentCol].push(node);
       currentColHeight += h;
     }
+
+    // Cleanup trailing headers in columns
     cols.forEach((col) => {
-      if (col.length > 0 && col[col.length - 1].type === "header") {
+      while (col.length > 0 && col[col.length - 1].type === "header") {
         col.pop();
       }
     });
 
     return cols;
   }, [flattenedItems, orientation, theme.fontSizeScale]);
+
   useEffect(() => {
     if (onItemsVisibleChange) {
       let count = 0;
@@ -270,27 +276,6 @@ function MenuCard({
           </div>
         ))}
       </div>
-
-      {/* 
-      <div className="preview-legend">
-        <div className="legend-item">
-          <span className="food-type-icon veg">
-            <span className="dot"></span>
-          </span>
-          <span>Veg</span>
-        </div>
-        <div className="legend-item">
-          <span className="food-type-icon non-veg">
-            <span className="dot"></span>
-          </span>
-          <span>Non-Veg</span>
-        </div>
-        <div className="legend-item">
-          <span className="hot-indicator">🔥</span>
-          <span>Spicy</span>
-        </div>
-      </div> 
-      */}
     </div>
   );
 }

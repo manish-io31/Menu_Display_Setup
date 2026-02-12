@@ -1,15 +1,14 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { updateTheme } from "../redux/Authactions";
-import { MenuState } from "../redux/Authreducer";
-import MenuCard from "./menucard";
-import StepNav from "../components/StepNav";
-import "../App.css";
+import { updateTheme } from "../../redux/Authactions";
+import { MenuState } from "../../redux/Authreducer";
+import MenuCard from "../../components/MenuCard/MenuCard";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import "../../App.css"; // Keep global styles for now
+import "./UploadImages.css";
 
 const UploadImages = () => {
   const dispatch = useDispatch() as any;
-  const navigate = useNavigate();
   const { theme } = useSelector((state: MenuState) => state);
   const [activeTab, setActiveTab] = useState<"logo" | "background">("logo");
 
@@ -61,20 +60,9 @@ const UploadImages = () => {
 
   return (
     <div className="preview-layout-container">
-      <div className="page-header">
-        <div className="header-left">
-          <button className="header-back-btn" onClick={() => navigate(-1)}>
-            <span className="sidebar-back-btn-content">‹</span> Back
-          </button>
-          <h1 className="header-title">Display signage</h1>
-        </div>
-        <StepNav currentStep={4} />
-      </div>
+      <PageHeader title="Display signage" currentStep={4} />
 
-      <div
-        className="item-mapping-grid"
-        style={{ gridTemplateColumns: "350px 1fr" }}
-      >
+      <div className="item-mapping-grid upload-layout-grid">
         {/* LEFT PANEL: Controls */}
         <div className="sidebar-controls">
           <h2>Customize Branding</h2>

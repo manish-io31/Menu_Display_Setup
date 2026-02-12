@@ -1,0 +1,176 @@
+/* MenuCard.css */
+
+.preview-board {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto; /* Default auto, overridden by no-scroll */
+  background-color: var(--bg-color);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  font-family: var(--item-font);
+  color: var(--item-color);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.preview-board.full-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.preview-board.no-scroll {
+  overflow: hidden;
+}
+
+/* Header */
+.preview-header {
+  display: flex;
+  flex-direction: column; /* Or row? User code implies stacked or simple flex */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 10%; /* Approximation based on user logic */
+  background: rgba(0, 0, 0, 0.2); /* Slight tint for readability */
+}
+
+.preview-logo {
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.preview-company-name {
+  font-family: var(--cat-font);
+  color: var(--primary);
+  font-size: calc(1rem * var(--font-scale) * 0.8);
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* CSS Grid/Flex Columns */
+.preview-grid-columns {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  gap: 30px; /* gapX from logic */
+  align-items: flex-start;
+}
+
+.preview-struct-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* nodePadding approximation */
+}
+
+/* Category Headers */
+.category-ribbon-styled {
+  background-color: var(--ribbon-color);
+  color: #fff; /* Assuming white text on ribbon */
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--cat-font);
+  font-size: calc(0.5rem * var(--font-scale)); /* Approx scaling */
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: fit-content;
+}
+
+/* Items */
+.preview-item-styled {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 2px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2); /* Subtle separator */
+}
+
+.preview-item-styled.sold-out {
+  opacity: 0.6;
+}
+
+.item-name {
+  font-size: calc(0.4rem * var(--font-scale));
+  font-family: var(--item-font);
+  color: var(--item-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.item-price {
+  font-size: calc(0.4rem * var(--font-scale));
+  font-family: var(--item-font);
+  color: var(--price-color);
+  font-weight: bold;
+}
+
+/* Food Type Icons */
+.food-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border: 1px solid;
+  padding: 1px;
+}
+.food-type-icon.veg {
+  border-color: green;
+}
+.food-type-icon.non-veg {
+  border-color: red;
+}
+
+.food-type-icon .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.food-type-icon.veg .dot {
+  background-color: green;
+}
+.food-type-icon.non-veg .dot {
+  background-color: red;
+}
+
+/* Buttons */
+.full-preview-btn,
+.exit-full-preview-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+  padding: 8px 12px;
+  background: white;
+  color: black;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.exit-full-preview-btn {
+  background: red;
+  color: white;
+}
+
+.loading {
+  color: white;
+  text-align: center;
+  padding: 20px;
+}

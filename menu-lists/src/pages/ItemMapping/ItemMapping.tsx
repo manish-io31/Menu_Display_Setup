@@ -1,6 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   fetchMenuRequest,
   toggleItemSelection,
@@ -10,12 +9,13 @@ import {
   updateItemDetails,
   reorderCategories,
   reorderCategoryItems,
-} from "../redux/Authactions";
-import { MenuState } from "../redux/Authreducer";
+} from "../../redux/Authactions";
+import { MenuState } from "../../redux/Authreducer";
 import { useNavigate } from "react-router-dom";
-import { calculateCapacityStatistics } from "../utils/capacityCalculator";
-import MenuCard from "./menucard";
-import StepNav from "../components/StepNav";
+import { calculateCapacityStatistics } from "../../utils/capacityCalculator";
+import MenuCard from "../../components/MenuCard/MenuCard";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import Modal from "../../components/Modal/Modal";
 import {
   DndContext,
   closestCenter,
@@ -33,7 +33,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import "../App.css";
+import "./ItemMapping.css";
 
 // --- Sortable Components ---
 
@@ -110,7 +110,11 @@ const SortableCategory = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div ref={setNodeRef} style={style} className="im-group-section">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`im-group-section ${collapsed ? "collapsed" : ""}`}
+    >
       <div className="im-group-header">
         {/* Drag Handle Area */}
         <div
@@ -343,6 +347,29 @@ function ItemMapping() {
   ]);
 
   const capacity = theme.approxItemsVisible;
+  const totalSelectedCount = useMemo(() => {
+    let count = 0;
+    menu.forEach((cat) => {
+      cat.items.forEach((item) => {
+        if (item.isSelected && (theme.showUnavailable || item.isAvailable)) {
+          count++;
+        }
+      });
+    });
+    return count;
+  }, [menu, theme.showUnavailable]);
+
+  // Capacity Logic: ZERO MISMATCH GUARANTEE
+  const itemsLeft = capacity - totalSelectedCount;
+  const isCapacityReached = itemsLeft <= 0;
+  const isOverCapacity = itemsLeft < 0;
+
+  // Capacity visual feedback
+  const capacityState = isOverCapacity
+    ? "danger"
+    : itemsLeft <= 5
+      ? "warning"
+      : "safe";
 
   // Group items that are SELECTED and visible based on 'showUnavailable' toggle
   const selectedItemsGrouped = useMemo(() => {
@@ -360,16 +387,7 @@ function ItemMapping() {
     return grouped;
   }, [menu, theme.showUnavailable]);
 
-  const totalSelectedCount = selectedItemsGrouped.reduce(
-    (acc, group) => acc + group.items.length,
-    0,
-  );
-
-  // Capacity Logic: ZERO MISMATCH GUARANTEE
-  // rule: Selected + Left = Approx => Left = Approx - Selected
-  const itemsLeft = capacity - totalSelectedCount;
-  const isCapacityReached = itemsLeft <= 0;
-  const isOverCapacity = itemsLeft < 0;
+  /* Removed manual calculation to use memoized totalSelectedCount */
 
   const isAllSelected = useMemo(() => {
     if (!selectedCategory) return false;
@@ -429,18 +447,35 @@ function ItemMapping() {
     navigate("/upload-images");
   };
 
+  // Scale Calculation for Preview
+  const [previewScale, setPreviewScale] = useState(1);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (showPreviewModal && previewContainerRef.current) {
+        const containerWidth = previewContainerRef.current.offsetWidth;
+        const boardWidth = theme.orientation === "portrait" ? 720 : 1280;
+        const newScale = (containerWidth - 40) / boardWidth;
+        setPreviewScale(Math.min(newScale, 1));
+      }
+    };
+
+    if (showPreviewModal) {
+      const timer = setTimeout(updateScale, 100);
+      window.addEventListener("resize", updateScale);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener("resize", updateScale);
+      };
+    }
+  }, [showPreviewModal, theme.orientation]);
+
   if (loading) return <div className="loading-screen">Loading items...</div>;
 
   return (
     <div className="preview-layout-container">
-      <div className="page-header">
-        <button className="header-back-btn" onClick={() => navigate(-1)}>
-          <span className="sidebar-back-btn-content">‹</span> Back
-        </button>
-        <h2 className="header-title">Display signage</h2>
-      </div>
-
-      <StepNav currentStep={3} />
+      <PageHeader title="Display signage" currentStep={3} />
 
       <div className="item-mapping-grid">
         {/* COLUMN 1: Categories */}
@@ -533,12 +568,10 @@ function ItemMapping() {
 
         {/* COLUMN 3: Selected Items List & Editing */}
         <div className="im-col-status">
-          <div className="im-status-header-row">
+          <div className={`im-status-header-row ${capacityState}`}>
             <span className="im-status-title">SELECTED ITEMS FOR DISPLAY</span>
-            <span
-              className={`im-items-left ${itemsLeft <= 0 ? "limit-reached" : ""}`}
-            >
-              {itemsLeft < 0
+            <span className={`im-items-left ${capacityState}`}>
+              {isOverCapacity
                 ? `Overflow: ${Math.abs(itemsLeft)}`
                 : `Items left: ${itemsLeft}`}
             </span>
@@ -549,14 +582,7 @@ function ItemMapping() {
               Added items: {totalSelectedCount}
             </span>
             {isOverCapacity && (
-              <span
-                className="capacity-error-text"
-                style={{
-                  color: "#d32f2f",
-                  fontSize: "0.8rem",
-                  fontWeight: "bold",
-                }}
-              >
+              <span className="capacity-error-text">
                 ⚠️ Reduce {Math.abs(itemsLeft)} items to fit!
               </span>
             )}
@@ -826,28 +852,28 @@ function ItemMapping() {
       </div>
 
       {/* PREVIEW MODAL */}
-      {showPreviewModal && (
-        <div
-          className="im-preview-modal-overlay"
-          onClick={() => setShowPreviewModal(false)}
-        >
+      <Modal
+        isOpen={showPreviewModal}
+        onClose={() => setShowPreviewModal(false)}
+        className="preview-modal"
+      >
+        <div className="im-modal-preview-container" ref={previewContainerRef}>
           <div
-            className="im-preview-modal-content"
-            onClick={(e) => e.stopPropagation()} // Prevent close on content click
+            className="im-scaled-preview"
+            style={{
+              transform: `scale(${previewScale})`,
+              width: theme.orientation === "portrait" ? "720px" : "1280px",
+              height: theme.orientation === "portrait" ? "1280px" : "720px",
+              transformOrigin: "top left",
+            }}
           >
-            <button
-              className="im-preview-close-btn"
-              onClick={() => setShowPreviewModal(false)}
-            >
-              ✕
-            </button>
             <MenuCard
               theme={theme}
               previewMode={false} // Only show selected items
             />
           </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }
